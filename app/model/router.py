@@ -84,10 +84,20 @@ class ModelManager:
         for model in ModelManager.available_models.values():
             model.fit(X, y)
 
-        return {"message": f"Trained {len(ModelManager.available_models)} models on {len(X)} samples."}
+        return {
+            "message": f"Trained {len(ModelManager.available_models)} models on {len(X)} samples."
+        }
 
+class SetModelRequest(BaseModel):
+    model_name: str
 
-
+@router.post("/set_model")
+def set_model(request: SetModelRequest):
+    try:
+        ModelManager.set_model(request.model_name)
+        return {"message": f"Switched to model: {request.model_name}"}
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
 class PredictRequest(BaseModel):
     input: list  # Example: [1, 0]
@@ -96,3 +106,26 @@ class PredictRequest(BaseModel):
 def predict(request: PredictRequest):
     prediction = ModelManager.predict(request.input)
     return {"input": request.input, "prediction": prediction}
+
+class ModelSwitchRequest(BaseModel):
+    model_name: str
+
+
+@router.post("/set_model")
+def set_model(request: ModelSwitchRequest):
+    try:
+        ModelManager.set_model(request.model_name)
+        return {"message": f"Switched to model: {request.model_name}"}
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
+@router.get("/current_model")
+def current_model():
+    return {"current_model": ModelManager.get_current_model()}
+
+
+@router.get("/list_models")
+def list_models():
+    return {"available_models": ModelManager.list_models()}
+
