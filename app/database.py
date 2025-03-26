@@ -11,9 +11,7 @@ from sqlalchemy.orm import sessionmaker
 SQLALCHEMY_DATABASE_URL = "sqlite:///./sql_app.db"
 
 # Open up a connection so that we are able to use the database
-engine = create_engine(
-    SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
-)
+engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
 
 # Bind the engine just created
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

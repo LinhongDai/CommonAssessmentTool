@@ -58,15 +58,9 @@ class ClientBase(BaseModel):
     citizen_status: bool = Field(description="Client's citizenship status")
     level_of_schooling: int = Field(ge=1, le=14, description="Education level (1-14)")
     fluent_english: bool = Field(description="English fluency status")
-    reading_english_scale: int = Field(
-        ge=0, le=10, description="English reading level (0-10)"
-    )
-    speaking_english_scale: int = Field(
-        ge=0, le=10, description="English speaking level (0-10)"
-    )
-    writing_english_scale: int = Field(
-        ge=0, le=10, description="English writing level (0-10)"
-    )
+    reading_english_scale: int = Field(ge=0, le=10, description="English reading level (0-10)")
+    speaking_english_scale: int = Field(ge=0, le=10, description="English speaking level (0-10)")
+    writing_english_scale: int = Field(ge=0, le=10, description="English writing level (0-10)")
     numeracy_scale: int = Field(ge=0, le=10, description="Numeracy skill level (0-10)")
     computer_scale: int = Field(ge=0, le=10, description="Computer skill level (0-10)")
     transportation_bool: bool = Field(description="Has transportation")
@@ -78,9 +72,7 @@ class ClientBase(BaseModel):
     currently_employed: bool = Field(description="Current employment status")
     substance_use: bool = Field(description="Substance use status")
     time_unemployed: int = Field(ge=0, description="Time unemployed in months")
-    need_mental_health_support_bool: bool = Field(
-        description="Needs mental health support"
-    )
+    need_mental_health_support_bool: bool = Field(description="Needs mental health support")
 
     class Config:
         json_schema_extra = {

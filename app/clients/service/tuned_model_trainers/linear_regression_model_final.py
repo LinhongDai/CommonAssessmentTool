@@ -85,9 +85,7 @@ def build_pipeline(use_poly=False):
 
 def train_and_evaluate_with_split(selected_features, use_poly=False):
     X, y = load_data(selected_features)
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.2, random_state=42
-    )
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
     pipeline = build_pipeline(use_poly=use_poly)
     pipeline.fit(X_train, y_train)
     predictions = pipeline.predict(X_test)
@@ -103,9 +101,7 @@ def cross_validate_model(selected_features, use_poly=False):
     pipeline = build_pipeline(use_poly=use_poly)
     cv = KFold(n_splits=5, shuffle=True, random_state=42)
     r2_scores = cross_val_score(pipeline, X, y, cv=cv, scoring="r2")
-    mae_scores = -cross_val_score(
-        pipeline, X, y, cv=cv, scoring="neg_mean_absolute_error"
-    )
+    mae_scores = -cross_val_score(pipeline, X, y, cv=cv, scoring="neg_mean_absolute_error")
 
     print(f"Cross-Validation R² scores: {r2_scores}")
     print(f"Mean R²: {np.mean(r2_scores):.3f}")

@@ -23,9 +23,7 @@ level_of_schooling = np.random.choice(
 # English proficiency: fluent_english impacts reading/speaking/writing scores
 fluent_english = np.random.randint(4, 10, num_samples)
 reading_english = np.clip(fluent_english + np.random.randint(-1, 2, num_samples), 1, 10)
-speaking_english = np.clip(
-    fluent_english + np.random.randint(-1, 2, num_samples), 1, 10
-)
+speaking_english = np.clip(fluent_english + np.random.randint(-1, 2, num_samples), 1, 10)
 writing_english = np.clip(fluent_english + np.random.randint(-1, 2, num_samples), 1, 10)
 
 # Numeracy and computer skills
@@ -95,6 +93,4 @@ output_path = os.path.join(os.path.dirname(__file__), "data_commontool_synthetic
 
 data.to_csv(output_path, index=False)
 
-print(
-    f"✅ {num_samples} synthetic data rows generated and saved to data_commontool_synthetic.csv"
-)
+print(f"✅ {num_samples} synthetic data rows generated and saved to data_commontool_synthetic.csv")

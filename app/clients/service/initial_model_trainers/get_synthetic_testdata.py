@@ -25,9 +25,7 @@ level_of_schooling = np.random.choice(
 # English proficiency
 fluent_english = np.random.randint(4, 10, num_samples)
 reading_english = np.clip(fluent_english + np.random.randint(-1, 2, num_samples), 1, 10)
-speaking_english = np.clip(
-    fluent_english + np.random.randint(-1, 2, num_samples), 1, 10
-)
+speaking_english = np.clip(fluent_english + np.random.randint(-1, 2, num_samples), 1, 10)
 writing_english = np.clip(fluent_english + np.random.randint(-1, 2, num_samples), 1, 10)
 
 # Numeracy and computer skills
@@ -67,16 +65,11 @@ substance_penalty = np.where(substance_use == 1, -10, 0)
 long_unemployed_penalty = np.where(time_unemployed >= 4, -5, 0)
 
 bonus_services = (
-    employment_assistance
-    + life_stabilization
-    + retention_services
-    + specialized_services
+    employment_assistance + life_stabilization + retention_services + specialized_services
 ) * 3
 
 employment_bonus = np.where(currently_employed == 1, 5, 0)
-education_effect = np.minimum(
-    level_of_schooling, 12
-)  # Cap effect after a certain level
+education_effect = np.minimum(level_of_schooling, 12)  # Cap effect after a certain level
 
 success_rate_base = (
     fluent_english * 2
@@ -137,9 +130,7 @@ data = pd.DataFrame(
 )
 
 # Save to CSV
-output_path = os.path.join(
-    os.path.dirname(__file__), "../data_commontool_synthetic_testdata.csv"
-)
+output_path = os.path.join(os.path.dirname(__file__), "../data_commontool_synthetic_testdata.csv")
 data.to_csv(output_path, index=False)
 
 print(

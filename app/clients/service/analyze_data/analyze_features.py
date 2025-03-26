@@ -19,11 +19,7 @@ def analyze_features(csv_path, target_col="success_rate", threshold=0.1):
     target_corr = corr[target_col].drop(target_col)  # drop self-correlation
     recommended_features = target_corr[abs(target_corr) >= threshold].index.tolist()
 
-    print(
-        "Recommended features (|correlation with '{}'| >= {:.2f}):".format(
-            target_col, threshold
-        )
-    )
+    print("Recommended features (|correlation with '{}'| >= {:.2f}):".format(target_col, threshold))
     print(recommended_features)
 
     return recommended_features
@@ -32,9 +28,7 @@ def analyze_features(csv_path, target_col="success_rate", threshold=0.1):
 if __name__ == "__main__":
     # Dynamically build relative path to your dataset
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-    csv_path = os.path.join(
-        BASE_DIR, "../../clients/service/data_commontool_synthetic.csv"
-    )
+    csv_path = os.path.join(BASE_DIR, "../../clients/service/data_commontool_synthetic.csv")
 
     # Call feature analysis
     selected_features = analyze_features(csv_path)

@@ -74,9 +74,7 @@ class Client(Base):
     transportation_bool = Column(Boolean)
     caregiver_bool = Column(Boolean)
     housing = Column(Integer, CheckConstraint("housing >= 1 AND housing <= 10"))
-    income_source = Column(
-        Integer, CheckConstraint("income_source >= 1 AND income_source <= 11")
-    )
+    income_source = Column(Integer, CheckConstraint("income_source >= 1 AND income_source <= 11"))
     felony_bool = Column(Boolean)
     attending_school = Column(Boolean)
     currently_employed = Column(Boolean)
@@ -100,9 +98,7 @@ class ClientCase(Base):
     employment_related_financial_supports = Column(Boolean)
     employer_financial_supports = Column(Boolean)
     enhanced_referrals = Column(Boolean)
-    success_rate = Column(
-        Integer, CheckConstraint("success_rate >= 0 AND success_rate <= 100")
-    )
+    success_rate = Column(Integer, CheckConstraint("success_rate >= 0 AND success_rate <= 100"))
 
     client = relationship("Client", back_populates="cases")
     user = relationship("User", back_populates="cases")

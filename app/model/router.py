@@ -16,6 +16,7 @@ router = APIRouter(prefix="/model", tags=["Model Management"])
 # Define directory for pickled models
 MODEL_DIR = "app/clients/service/MLmodels"
 
+
 def load_client_training_data(db):
     clients = db.query(Client).all()
     X, y = [], []
@@ -46,7 +47,7 @@ class ModelManager:
     available_models = {
         "logistic_regression": LogisticRegression(),
         "random_forest": RandomForestClassifier(),
-        "neural_network": MLPClassifier()
+        "neural_network": MLPClassifier(),
     }
     current_model_name = "logistic_regression"
     current_model = available_models[current_model_name]
@@ -99,13 +100,12 @@ def train_models(db: Session = Depends(get_db)):
             model.fit(X, y)
         except Exception as e:
             print(f"Error training {model}: {e}")
-    return {
-        "message": f"Trained {len(ModelManager.available_models)} models on {len(X)} samples."
-    }
+    return {"message": f"Trained {len(ModelManager.available_models)} models on {len(X)} samples."}
 
 
 class PredictRequest(BaseModel):
     input: List[float]
+
 
 @router.post("/predict")
 def predict(request: PredictRequest):
@@ -115,6 +115,7 @@ def predict(request: PredictRequest):
 
 class SetModelRequest(BaseModel):
     model_name: str
+
 
 @router.post("/set_model")
 def set_model(request: SetModelRequest):

@@ -116,9 +116,7 @@ class ClientService:
         if reading_english_scale is not None:
             query = query.filter(Client.reading_english_scale == reading_english_scale)
         if speaking_english_scale is not None:
-            query = query.filter(
-                Client.speaking_english_scale == speaking_english_scale
-            )
+            query = query.filter(Client.speaking_english_scale == speaking_english_scale)
         if writing_english_scale is not None:
             query = query.filter(Client.writing_english_scale == writing_english_scale)
         if numeracy_scale is not None:
@@ -143,8 +141,7 @@ class ClientService:
             query = query.filter(Client.time_unemployed == time_unemployed)
         if need_mental_health_support_bool is not None:
             query = query.filter(
-                Client.need_mental_health_support_bool
-                == need_mental_health_support_bool
+                Client.need_mental_health_support_bool == need_mental_health_support_bool
             )
 
         try:
@@ -178,9 +175,7 @@ class ClientService:
     @staticmethod
     def get_client_services(db: Session, client_id: int):
         """Get all services for a specific client with case worker info"""
-        client_cases = (
-            db.query(ClientCase).filter(ClientCase.client_id == client_id).all()
-        )
+        client_cases = db.query(ClientCase).filter(ClientCase.client_id == client_id).all()
         if not client_cases:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
@@ -197,12 +192,7 @@ class ClientService:
                 detail="Success rate must be between 0 and 100",
             )
 
-        return (
-            db.query(Client)
-            .join(ClientCase)
-            .filter(ClientCase.success_rate >= min_rate)
-            .all()
-        )
+        return db.query(Client).join(ClientCase).filter(ClientCase.success_rate >= min_rate).all()
 
     @staticmethod
     def get_clients_by_case_worker(db: Session, case_worker_id: int):
@@ -214,12 +204,7 @@ class ClientService:
                 detail=f"Case worker with id {case_worker_id} not found",
             )
 
-        return (
-            db.query(Client)
-            .join(ClientCase)
-            .filter(ClientCase.user_id == case_worker_id)
-            .all()
-        )
+        return db.query(Client).join(ClientCase).filter(ClientCase.user_id == case_worker_id).all()
 
     @staticmethod
     def update_client(db: Session, client_id: int, client_update: ClientUpdate):
@@ -301,9 +286,7 @@ class ClientService:
         # Check if assignment already exists
         existing_case = (
             db.query(ClientCase)
-            .filter(
-                ClientCase.client_id == client_id, ClientCase.user_id == case_worker_id
-            )
+            .filter(ClientCase.client_id == client_id, ClientCase.user_id == case_worker_id)
             .first()
         )
 

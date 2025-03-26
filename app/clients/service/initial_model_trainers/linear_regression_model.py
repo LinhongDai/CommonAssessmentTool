@@ -61,9 +61,7 @@ LINEAR_MODEL_FEATURES = [
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Path to CSV file using relative path
-DATA_PATH = os.path.join(
-    BASE_DIR, "../../clients/service/data_commontool_synthetic.csv"
-)
+DATA_PATH = os.path.join(BASE_DIR, "../../clients/service/data_commontool_synthetic.csv")
 
 # Path to output model directory
 MODEL_DIR = os.path.join(BASE_DIR, "../../clients/service/MLmodels/")
@@ -79,9 +77,7 @@ def load_data(selected_features):
 
 def train_and_evaluate_with_split(model_name, selected_features):
     X, y = load_data(selected_features)
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.2, random_state=42
-    )
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
     model = MODEL_MAP[model_name]
     model.fit(X_train, y_train)
     predictions = model.predict(X_test)

@@ -26,9 +26,7 @@ router = APIRouter(prefix="/clients", tags=["clients"])
 async def get_clients(
     current_user: User = Depends(get_admin_user),
     skip: int = Query(default=0, ge=0, description="Number of records to skip"),
-    limit: int = Query(
-        default=50, ge=1, le=150, description="Maximum number of records to return"
-    ),
+    limit: int = Query(default=50, ge=1, le=150, description="Maximum number of records to return"),
     db: Session = Depends(get_db),
 ):
     return ClientService.get_clients(db, skip, limit)
@@ -140,9 +138,7 @@ async def get_client_services(
 
 @router.get("/search/success-rate", response_model=List[ClientResponse])
 async def get_clients_by_success_rate(
-    min_rate: int = Query(
-        70, ge=0, le=100, description="Minimum success rate percentage"
-    ),
+    min_rate: int = Query(70, ge=0, le=100, description="Minimum success rate percentage"),
     current_user: User = Depends(get_admin_user),
     db: Session = Depends(get_db),
 ):

@@ -25,7 +25,7 @@ app = FastAPI(
 # Include routers
 app.include_router(auth_router)
 app.include_router(clients_router)
-app.include_router(model_router)  
+app.include_router(model_router)
 
 
 # Configure CORS middleware
