@@ -4,21 +4,21 @@ from typing import List
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.neural_network import MLPClassifier
+from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models import Client
-from sqlalchemy.orm import Session  # ✅ add this!
 import numpy as np
-
+import os
+import pickle
 
 router = APIRouter(prefix="/model", tags=["Model Management"])
+
+# Define directory for pickled models
+MODEL_DIR = "app/clients/service/MLmodels"
+
 def load_client_training_data(db):
-    """
-    Fetches client records and extracts features and labels for ML training.
-    You can define your own target for now. We'll use 'currently_employed' as an example label.
-    """
     clients = db.query(Client).all()
-    X = []
-    y = []
+    X, y = [], []
 
     for c in clients:
         try:
@@ -39,8 +39,8 @@ def load_client_training_data(db):
             y.append(label)
         except:
             continue  # skip bad records
-
     return X, y
+
 
 class ModelManager:
     available_models = {
@@ -48,9 +48,19 @@ class ModelManager:
         "random_forest": RandomForestClassifier(),
         "neural_network": MLPClassifier()
     }
-
     current_model_name = "logistic_regression"
     current_model = available_models[current_model_name]
+
+    @classmethod
+    def load_pickled_models(cls):
+        if not os.path.exists(MODEL_DIR):
+            return
+        for file in os.listdir(MODEL_DIR):
+            if file.endswith(".pkl"):
+                model_name = file.replace(".pkl", "")
+                with open(os.path.join(MODEL_DIR, file), "rb") as f:
+                    model = pickle.load(f)
+                    cls.available_models[model_name] = model
 
     @classmethod
     def set_model(cls, model_name: str):
@@ -74,45 +84,40 @@ class ModelManager:
         except Exception as e:
             return str(e)
 
-    @router.post("/train_models")
-    def train_models(db: Session = Depends(get_db)):
-        X, y = load_client_training_data(db)
 
-        if len(X) == 0:
-            return {"error": "No training data found in the database."}
+# Load models when module loads
+ModelManager.load_pickled_models()
 
-        for model in ModelManager.available_models.values():
+
+@router.post("/train_models")
+def train_models(db: Session = Depends(get_db)):
+    X, y = load_client_training_data(db)
+    if len(X) == 0:
+        return {"error": "No training data found in the database."}
+    for model in ModelManager.available_models.values():
+        try:
             model.fit(X, y)
+        except Exception as e:
+            print(f"Error training {model}: {e}")
+    return {
+        "message": f"Trained {len(ModelManager.available_models)} models on {len(X)} samples."
+    }
 
-        return {
-            "message": f"Trained {len(ModelManager.available_models)} models on {len(X)} samples."
-        }
-
-class SetModelRequest(BaseModel):
-    model_name: str
-
-@router.post("/set_model")
-def set_model(request: SetModelRequest):
-    try:
-        ModelManager.set_model(request.model_name)
-        return {"message": f"Switched to model: {request.model_name}"}
-    except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
 
 class PredictRequest(BaseModel):
-    input: list  # Example: [1, 0]
+    input: List[float]
 
 @router.post("/predict")
 def predict(request: PredictRequest):
     prediction = ModelManager.predict(request.input)
     return {"input": request.input, "prediction": prediction}
 
-class ModelSwitchRequest(BaseModel):
+
+class SetModelRequest(BaseModel):
     model_name: str
 
-
 @router.post("/set_model")
-def set_model(request: ModelSwitchRequest):
+def set_model(request: SetModelRequest):
     try:
         ModelManager.set_model(request.model_name)
         return {"message": f"Switched to model: {request.model_name}"}
@@ -128,4 +133,3 @@ def current_model():
 @router.get("/list_models")
 def list_models():
     return {"available_models": ModelManager.list_models()}
-
