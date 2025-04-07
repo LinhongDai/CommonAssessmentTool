@@ -9,7 +9,8 @@ from app.database import get_db
 from app.models import Client
 import numpy as np
 import os
-import pickle
+import cloudpickle as pickle
+
 
 router = APIRouter(prefix="/model", tags=["Model Management"])
 
