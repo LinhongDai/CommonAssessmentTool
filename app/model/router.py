@@ -87,7 +87,7 @@ class ModelManager:
 
 
 # Load models when module loads
-ModelManager.load_pickled_models()
+#ModelManager.load_pickled_models()
 
 
 @router.post("/train_models")
