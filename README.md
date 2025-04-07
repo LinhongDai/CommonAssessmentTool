@@ -55,3 +55,39 @@ This also has an API file to interact with the front end, and logic in order to 
 
 -Create case assignment (Allow authorized users to create a new case assignment.)
 
+
+
+## Running Backend with Docker Compose
+
+### Prerequisites
+Before you start, make sure you have:
+- Install Docker if you haven't already.
+
+- You can check if they are installed with:
+```
+docker --version
+```
+
+### Build and start the backend service
+
+This will:
+
+- Build the Docker image using the provided Dockerfile
+
+- Start a container based on that image
+
+```bash
+docker compose up --build
+```
+
+- Start without rebuilding:
+```
+docker compose up
+```
+
+
+### Stop the service
+```bash
+docker compose down
+```
+
