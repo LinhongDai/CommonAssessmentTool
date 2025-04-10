@@ -91,3 +91,31 @@ docker compose up
 docker compose down
 ```
 
+
+To automate our development workflow and ensure code quality, we implemented a CI pipeline using GitHub Actions.
+
+### GitHub Workflow Setup
+
+Developer C created the GitHub Actions workflow file located at `.github/workflows/ci.yml`. This workflow is configured to trigger on every pull request or direct push to the `main` branch, ensuring all changes are validated before merging.
+
+### CI Jobs
+
+Developer D implemented the following CI jobs:
+
+- **Task 1: Linter/Formatter Check**
+  - Tools used: `flake8`, `black`
+  - Ensures consistent coding style and helps detect syntax or logic errors early.
+
+- **Task 2: Unit Testing**
+  - Tool used: `pytest`
+  - Runs all unit tests to validate functionality and prevent regressions.
+
+- **Task 3: Docker Syntax Validation & Image Build**
+  - Validates the syntax of Docker-related files and attempts to build the Docker image.
+
+- **Task 4: Container Startup Verification**
+  - Executes the built Docker container within the CI pipeline to ensure it can start correctly.
+
+### Definition of Done (DoD)
+
+The pipeline is considered complete when all CI checks (linter, tests, Docker validations) pass successfully on pull request or push to the `main` branch.
