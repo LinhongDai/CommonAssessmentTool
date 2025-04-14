@@ -94,6 +94,14 @@ docker compose down
 
 To automate our development workflow and ensure code quality, we implemented a CI pipeline using GitHub Actions.
 
+### Publicly Available Endpoint
+Access the backend application and test the various features of the application using the Swagger from:
+
+```
+http://35.212.253.228:8000/docs
+```
+
+
 ### GitHub Workflow Setup
 
 Developer C created the GitHub Actions workflow file located at `.github/workflows/ci.yml`. This workflow is configured to trigger on every pull request or direct push to the `main` branch, ensuring all changes are validated before merging.
