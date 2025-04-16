@@ -98,7 +98,7 @@ To automate our development workflow and ensure code quality, we implemented a C
 Access the backend application and test the various features of the application using the Swagger from:
 
 ```
-http://35.212.253.228:8000/docs
+http://34.222.122.12:8000/docs
 ```
 
 
