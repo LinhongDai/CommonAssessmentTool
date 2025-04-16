@@ -4,17 +4,20 @@ FROM python:3.11
 # Set working directory
 WORKDIR /code
 
-# Copy requirements first to leverage Docker cache
-COPY ./requirements.txt /code/requirements.txt
+# Copy requirements first
+COPY requirements.txt .
 
-# Install required packages
-RUN pip install --no-cache-dir -r /code/requirements.txt
+# Install dependencies
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of your application
-COPY . /code/
+# Copy entire app and rebuild script after installing dependencies
+COPY . .
 
-# Expose the port your app runs on
+# Rebuild model inside Docker
+RUN python scripts/rebuild_models.py
+
+# Expose port
 EXPOSE 8000
 
-# Command to run the application
+# Run the backend
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]

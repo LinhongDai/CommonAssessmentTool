@@ -55,3 +55,75 @@ This also has an API file to interact with the front end, and logic in order to 
 
 -Create case assignment (Allow authorized users to create a new case assignment.)
 
+
+
+## Running Backend with Docker Compose
+
+### Prerequisites
+Before you start, make sure you have:
+- Install Docker if you haven't already.
+
+- You can check if they are installed with:
+```
+docker --version
+```
+
+### Build and start the backend service
+
+This will:
+
+- Build the Docker image using the provided Dockerfile
+
+- Start a container based on that image
+
+```bash
+docker compose up --build
+```
+
+- Start without rebuilding:
+```
+docker compose up
+```
+
+
+### Stop the service
+```bash
+docker compose down
+```
+
+
+To automate our development workflow and ensure code quality, we implemented a CI pipeline using GitHub Actions.
+
+### Publicly Available Endpoint
+Access the backend application and test the various features of the application using the Swagger from:
+
+```
+http://35.212.253.228:8000/docs
+```
+
+
+### GitHub Workflow Setup
+
+Developer C created the GitHub Actions workflow file located at `.github/workflows/ci.yml`. This workflow is configured to trigger on every pull request or direct push to the `main` branch, ensuring all changes are validated before merging.
+
+### CI Jobs
+
+Developer D implemented the following CI jobs:
+
+- **Task 1: Linter/Formatter Check**
+  - Tools used: `flake8`, `black`
+  - Ensures consistent coding style and helps detect syntax or logic errors early.
+
+- **Task 2: Unit Testing**
+  - Tool used: `pytest`
+  - Runs all unit tests to validate functionality and prevent regressions.
+
+- **Task 3: Docker Syntax Validation & Image Build**
+  - Validates the syntax of Docker-related files and attempts to build the Docker image.
+
+- **Task 4: Container Startup Verification**
+  - Executes the built Docker container within the CI pipeline to ensure it can start correctly.
+
+### Definition of Done (DoD)
+
+The pipeline is considered complete when all CI checks (linter, tests, Docker validations) pass successfully on pull request or push to the `main` branch.
