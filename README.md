@@ -153,6 +153,7 @@ GitHub Actions uses a private SSH key (stored securely in GitHub Secrets, e.g., 
  ssh -i FastAPI.pem ec2-user@<your-ec2-ip>
 ```
 
+
 	•	No manual input is required during this process.
 
 
