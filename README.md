@@ -179,8 +179,8 @@ uvicorn app.main:app --host 0.0.0.0 --port 8000
 ```
 
 ### Explanation:
-	•	source venv/bin/activate activates the virtual environment to ensure dependencies are available.
-	•	uvicorn app.main:app --host 0.0.0.0 --port 8000 launches the FastAPI server, making it accessible via port 8000.
+source venv/bin/activate activates the virtual environment to ensure dependencies are available.
+uvicorn app.main:app --host 0.0.0.0 --port 8000 launches the FastAPI server, making it accessible via port 8000.
 
 ### Summary
 
