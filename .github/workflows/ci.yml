@@ -34,7 +34,7 @@ jobs:
 
       - name: Run Pylint
         run: |
-          pylint src/
+          pylint app/
 
       - name: Check code formatting with Black
         run: |
