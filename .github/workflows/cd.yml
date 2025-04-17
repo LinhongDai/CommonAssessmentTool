@@ -1,10 +1,8 @@
 name: CI/CD Pipeline
 
 on:
-  push:
-    branches: [master, main]
-  pull_request:
-    branches: [master, main]
+  release:
+    types: [published] # Upon every Release，the CD pipeline should run and automagically update
 
 jobs:
   test:
@@ -32,16 +30,34 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: Build Docker image
-        run: docker build -t common-assessment-tool .
-
-      - name: Run Docker container
+      - name: Set up SSH key
         run: |
-          docker run -d -p 8000:8000 common-assessment-tool
-          sleep 10  # Wait for container to start
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
 
-      - name: Test Docker container
+      - name: Deploy to EC2
         run: |
-          curl http://localhost:8000/docs
+          ssh ${{ secrets.EC2_HOST }} << 'EOF'
+            cd ${{ secrets.EC2_PROJECT_PATH }}
+            git pull origin main
+            source venv/bin/activate
+            pkill -f "uvicorn" || true
+            nohup uvicorn app.main:app --host 0.0.0.0 --port 8000 > out.log 2>&1 &
+          EOF
+
+      # - name: Build Docker image
+      #   run: docker build -t common-assessment-tool .
+
+      # - name: Run Docker container
+      #   run: |
+      #     docker run -d -p 8000:8000 common-assessment-tool
+      #     sleep 10  # Wait for container to start
+
+      # - name: Test Docker container
+      #   run: |
+      #     curl http://localhost:8000/docs
