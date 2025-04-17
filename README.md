@@ -127,3 +127,69 @@ Developer D implemented the following CI jobs:
 ### Definition of Done (DoD)
 
 The pipeline is considered complete when all CI checks (linter, tests, Docker validations) pass successfully on pull request or push to the `main` branch.
+
+
+### Continuous Deployment (CD) Pipeline
+
+This project includes a Continuous Deployment (CD) pipeline using GitHub Actions. The pipeline is triggered automatically whenever a new GitHub Release is published. The goal is to fully automate the deployment process, eliminating the need for manual intervention.
+
+### Deployment Workflow
+
+The CD workflow consists of the following steps:
+
+- ** 1. Run Tests Before Deployment
+
+Before deploying to the server, the pipeline runs automated tests using GitHub Actions. For example, pytest is used to validate that the backend code passes all unit and integration tests. This step ensures that faulty code is never deployed.
+	•	If any test fails, the pipeline halts and deployment does not proceed.
+	•	If all tests pass, the deployment continues.
+
+- ** 2. SSH into EC2 Instance Automatically
+
+GitHub Actions uses a private SSH key (stored securely in GitHub Secrets, e.g., FastAPI.pem) to access the target EC2 instance.
+	•	This replaces the manual login process and ensures secure, automated access.
+	•	The SSH command used is equivalent to:
+
+```bash
+ ssh -i FastAPI.pem ec2-user@<your-ec2-ip>
+```
+
+	•	No manual input is required during this process.
+
+
+- ** 3. Pull the Latest Code from GitHub
+
+Once logged into the EC2 instance, the workflow navigates to the project directory and pulls the latest version of the code from the main branch:
+
+```bash
+cd CommonAssessmentTool
+git pull origin main
+```
+This ensures that the EC2 instance is running the most recent codebase that corresponds to the latest release.
+
+
+- ** 4. Activate the Virtual Environment and Restart the FastAPI Application
+
+After pulling the updated code, the workflow activates the Python virtual environment and starts the FastAPI application using Uvicorn:
+
+```bash
+source venv/bin/activate
+uvicorn app.main:app --host 0.0.0.0 --port 8000
+```
+
+### Explanation:
+	•	source venv/bin/activate activates the virtual environment to ensure dependencies are available.
+	•	uvicorn app.main:app --host 0.0.0.0 --port 8000 launches the FastAPI server, making it accessible via port 8000.
+
+### Summary
+
+This automated CD pipeline allows you to deploy new versions of your backend simply by publishing a GitHub Release. The system will:
+	1.	Run tests to ensure code quality
+	2.	SSH into your EC2 instance securely
+	3.	Pull the latest code from GitHub
+	4.	Restart the FastAPI application
+
+No manual SSH commands or deployment scripts are required, significantly reducing operational overhead and the risk of human error.
+
+
+
+
