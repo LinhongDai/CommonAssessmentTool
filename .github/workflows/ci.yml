@@ -32,10 +32,6 @@ jobs:
         run: |
           python -m pytest tests/
 
-      - name: Run Pylint
-        run: |
-          pylint app/
-
       - name: Check code formatting with Black
         run: |
           black --check .
@@ -43,6 +39,10 @@ jobs:
       - name: Format code with Black
         run: |
           black .
+
+      - name: Run Pylint
+        run: |
+          pylint app/
         
       - name: Build Docker Image (syntax check)
         run: |
