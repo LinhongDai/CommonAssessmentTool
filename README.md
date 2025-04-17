@@ -140,21 +140,21 @@ The CD workflow consists of the following steps:
 - ** 1. Run Tests Before Deployment
 
 Before deploying to the server, the pipeline runs automated tests using GitHub Actions. For example, pytest is used to validate that the backend code passes all unit and integration tests. This step ensures that faulty code is never deployed.
-	•	If any test fails, the pipeline halts and deployment does not proceed.
-	•	If all tests pass, the deployment continues.
+If any test fails, the pipeline halts and deployment does not proceed.
+If all tests pass, the deployment continues.
 
 - ** 2. SSH into EC2 Instance Automatically
 
 GitHub Actions uses a private SSH key (stored securely in GitHub Secrets, e.g., FastAPI.pem) to access the target EC2 instance.
-	•	This replaces the manual login process and ensures secure, automated access.
-	•	The SSH command used is equivalent to:
+This replaces the manual login process and ensures secure, automated access.
+The SSH command used is equivalent to:
 
 ```bash
  ssh -i FastAPI.pem ec2-user@<your-ec2-ip>
 ```
 
 
-	•	No manual input is required during this process.
+No manual input is required during this process.
 
 
 - ** 3. Pull the Latest Code from GitHub
@@ -165,6 +165,7 @@ Once logged into the EC2 instance, the workflow navigates to the project directo
 cd CommonAssessmentTool
 git pull origin main
 ```
+
 This ensures that the EC2 instance is running the most recent codebase that corresponds to the latest release.
 
 
