@@ -1,10 +1,6 @@
 name: CI/CD Pipeline
 
 on:
-  push:
-    branches: [main, master]
-  pull_request:
-    branches: [main, master]
   release:
     types: [published] # Upon every Release，the CD pipeline should run and automagically update
 
