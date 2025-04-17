@@ -1,12 +1,12 @@
-Team TicTech 
+### Team TicTech 
 
-Project -- Feature Development Backend: Create CRUD API's for Client
+### Project -- Feature Development Backend: Create CRUD API's for Client
 
-User Story
+### User Story
 
 As a user of the backend API's, I want to call API's that can retrieve, update, and delete information of clients who have already registered with the CaseManagment service so that I more efficiently help previous clients make better decisions on how to be gainfully employed.
 
-Acceptance Criteria
+### Acceptance Criteria
 - Provide REST API endpoints so that the Frontend can use them to get information on an existing client.
 - Document how to use the REST API
 - Choose and create a database to hold client information
