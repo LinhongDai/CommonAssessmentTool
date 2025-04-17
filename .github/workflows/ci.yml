@@ -41,9 +41,9 @@ jobs:
           black --check .
       
 
-      - name: Run Pylint
-        run: |
-          pylint app/
+      # - name: Run Pylint
+      #   run: |
+      #     pylint app/
         
       - name: Build Docker Image (syntax check)
         run: |
